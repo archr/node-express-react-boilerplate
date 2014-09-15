@@ -1,0 +1,22 @@
+@xs: ~'max-width: @{screen-xs}';
+@sm: ~'max-width: @{screen-sm}';
+@md: ~'max-width: @{screen-md}';
+@lg: ~'max-width: @{screen-lg}';
+
+.row{
+  .make-row();
+}
+
+.row-2{.make-md-column(2);}
+.row-3{.make-md-column(3);}
+.row-4{.make-md-column(4);}
+.row-6{.make-md-column(6);}
+.row-8{.make-md-column(8);}
+.row-9{.make-md-column(9);}
+.row-10{.make-md-column(10);}
+
+.row-6-center{
+  .make-md-column(6);
+  .make-md-column-offset(3);
+
+}
