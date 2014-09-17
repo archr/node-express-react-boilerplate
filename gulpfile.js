@@ -1,30 +1,42 @@
+/**
+ * Dependencias
+ *
+ */
+
 var gulp = require('gulp');
 var less = require('gulp-less');
 var browserify = require('gulp-browserify');
 var react = require('gulp-react');
 
+/**
+ * Procesa style.less a style.css
+ */
 gulp.task('style', function(){
-  gulp.src(['./assets/style.less'])
+  gulp.src(['./server/assets/style.less'])
     .pipe(less())
-    .pipe(gulp.dest('./public/css'));
+    .pipe(gulp.dest('./server/public/css'));
 });
 
-
+/**
+ * Pasa de .jsx a .js con browserify
+ */
 gulp.task('app', function () {
-  gulp.src(['./client/app.jsx'])
+  gulp.src(['./client/App.jsx'])
     .pipe(react())
     .pipe(browserify({
       debug: true,
       transform: [ 'reactify' ]
     }))
-    .pipe(gulp.dest('public/js'));
+    .pipe(gulp.dest('./server/public/js'));
 });
 
-
+/**
+ * Realiza las tareas cuando hay cambios a less o reactify
+ */
 gulp.task('dev', function () {
   gulp.watch('./client/**/**', [ 'app' ]);
-  gulp.watch('./assets/**/**', [ 'style' ]);
+  gulp.watch('./server/assets/**/**', [ 'style' ]);
 });
 
 
-gulp.task('build', [ 'styles', 'app']);
+gulp.task('build', [ 'style', 'app']);

@@ -1,4 +1,6 @@
-// Dependencias
+/**
+ * Dependencias
+ */
 var mongoose = require('mongoose');
 var express = require('express');
 var debug = require('debug')('app:index');
@@ -9,15 +11,26 @@ var config;
 
 var app = express();
 
-// Se carga la configuración
+/**
+ * Se carga la configuración dependendiendo del ambiente en el que
+ * se inice el server: test, develoment, production
+ *
+ * $ NODE_ENV=development node index.js
+ */
 var env = process.env.NODE_ENV || 'development';
 GLOBAL.config = config = require('./config')[env];
 debug('configuration %j', config);
 
-// Conexión a MongoDB
+/**
+ * Conexión a mongoDB con mongoose
+ *
+ */
 mongoose.connect(config.db);
 
-// Se cargan los modelos
+/**
+ * Se cargan los modelos definidos en ./models
+ * los cuales son schemas de mongoose
+ */
 var models = path.resolve(config.root, './models');
 debug('models %s', models);
 fs.readdirSync(models).forEach(function (file){
@@ -26,13 +39,19 @@ fs.readdirSync(models).forEach(function (file){
   require(model)();
 });
 
-// Se configura express
+/**
+ * Se configura express
+ */
 require('./config/express')(app);
 
-// Se cargan rutas
+/**
+ * Se cargan las rutas
+ */
 require('./routes')(app);
 
-// Se agrega el puerto en el que funcionara al app
+/**
+ * Se agrega el puerto en el que funcionara al app
+ */
 app.listen(config.port, function () {
-  console.log('server listen on port: %d', 3000);
+  console.log('server listen on port: %d', config.port);
 });
